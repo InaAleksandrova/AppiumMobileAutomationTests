@@ -8,20 +8,10 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to run tests (test, staging, production)'
-        required: true
-        default: 'test'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        environment: [test, staging, production]
 
     steps:
       - name: Checkout repository
@@ -38,6 +28,19 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Install Android SDK Components
+        run: |
+          sdkmanager "system-images;android-30;google_apis;x86"  # Install required system images for emulator
+
       - name: Cache Maven repository
         uses: actions/cache@v4
         with:
@@ -45,11 +48,26 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven
 
-      - name: Build Maven
-        run: mvn clean install -DskipTests
+      - name: Install Appium server and Appium android driver
+        run: |
+          npm install -g appium
+          appium -v
+          appium driver install uiautomator2
 
-      - name: Run Tests with Maven Profile ${{ matrix.environment }}
-        run: mvn -B test -P${{ matrix.environment }}
+      - name: Execute Android all test suites
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          profile: Nexus_5X
+          arch: x86
+          emulator-options: '-no-window -no-audio'
+          script: |
+            adb wait-for-device
+            sleep 60  # Wait for extra time to ensure the emulator has fully booted
+            adb shell getprop sys.boot_completed | grep -m 1 '1'
+            mvn clean install -DskipTests
+            mvn test || true
 
       - name: Generate Allure Report
         run: mvn allure:report || true
@@ -60,4 +78,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: target/allure-report
-
