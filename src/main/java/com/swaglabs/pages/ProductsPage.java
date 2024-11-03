@@ -72,7 +72,7 @@ public class ProductsPage extends BasePage {
         }
     }
 
-    public void removeProductFromCartByIndex(int index) {
+    public void removeProductFromProductsByIndex(int index) {
         try {
             WebElement removeFromCartButton = itemsListHelper.getButtonByItemIndex(PRODUCTS_LIST, PRODUCTS_REMOVE_FROM_CART_BUTTONS, index);
             removeFromCartButton.click();

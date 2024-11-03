@@ -1,13 +1,11 @@
+package com.swaglabs;
+
 import com.swaglabs.driverFactory.AndroidDriverService;
 import com.swaglabs.driverFactory.AppiumDriverService;
-import com.swaglabs.pages.CartPage;
-import com.swaglabs.pages.LoginPage;
-import com.swaglabs.pages.ProductsPage;
+import com.swaglabs.pages.*;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 
@@ -19,7 +17,7 @@ public class BaseTests {
 
     protected AppiumDriver driver;
 
-    @BeforeTest
+    @BeforeClass
     public void setUp() {
         // Initialize the services
         appiumDriverService = new AppiumDriverService();
@@ -48,16 +46,24 @@ public class BaseTests {
         return new CartPage(driver);
     }
 
-//    @AfterTest
-//    public void tearDown() {
-//        // Close the Android driver
-//        if (androidDriverService != null) {
-//            androidDriverService.closeDriver();
-//        }
-//
-//        // Stop the Appium server
-//        if (appiumDriverService != null && appiumService != null) {
-//            appiumDriverService.stopAppiumService(appiumService);
-//        }
-//    }
+    public CheckoutPage checkoutPage() {
+        return new CheckoutPage(driver);
+    }
+
+    public MenuPage menuPage() {
+        return new MenuPage(driver);
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the Android driver
+        if (androidDriverService != null) {
+            androidDriverService.closeDriver();
+        }
+
+        // Stop the Appium server
+        if (appiumDriverService != null && appiumService != null) {
+            appiumDriverService.stopAppiumService(appiumService);
+        }
+    }
 }
