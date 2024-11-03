@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '11'
-          distribution: 'temurin'
+          distribution: 'adopt'
 
       - name: Cache Maven repository
         uses: actions/cache@v4
@@ -40,8 +40,8 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven
 
-      - name: Build with Maven
-        run: mvn -B clean compile
+      - name: Build Maven
+        run: mvn clean install -DskipTests
 
       - name: Run Tests with Maven Profile ${{ matrix.environment }}
         run: mvn -B test -P${{ matrix.environment }}
