@@ -33,6 +33,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Cache Maven repository
         uses: actions/cache@v4
         with:
