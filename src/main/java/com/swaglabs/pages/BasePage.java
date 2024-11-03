@@ -17,11 +17,15 @@ public class BasePage {
 
     public BasePage(AppiumDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(120));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     public void waitUntilElementIsVisible(By by) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
+    public void waitUntilElementIsNotVisible(By by) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
     }
 
     public void enterText(By field, String text) {
@@ -40,6 +44,10 @@ public class BasePage {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    public boolean isElementNotPresent(By locator) {
+        return driver.findElements(locator).isEmpty();
     }
 
     public String getTextFromElement(By by) {

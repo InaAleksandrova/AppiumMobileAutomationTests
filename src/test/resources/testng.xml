@@ -1,0 +1,28 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SwagLabs Test Suite" verbose="1" parallel="none">
+
+    <test name="Swaglabs login tests">
+        <classes>
+            <class name="com.swaglabs.LoginTests"/>
+        </classes>
+    </test>
+
+    <test name="Swaglabs product tests">
+        <classes>
+            <class name="com.swaglabs.ProductsTests"/>
+        </classes>
+    </test>
+
+    <test name="Swaglabs cart tests">
+        <classes>
+            <class name="com.swaglabs.CartTests"/>
+        </classes>
+    </test>
+
+    <test name="Swaglabs checkout tests">
+        <classes>
+            <class name="com.swaglabs.CheckoutTests"/>
+        </classes>
+    </test>
+
+</suite>

@@ -14,8 +14,7 @@ public class ItemsListHelper {
 
     public WebElement getItemByIndex(String locator, int index) throws Exception {
         try {
-            WebElement item = driver.findElement(By.xpath(String.format("%s[%d]", locator, index)));
-            return item;
+            return driver.findElement(By.xpath(String.format("%s[%d]", locator, index)));
         } catch (Exception e) {
             throw new Exception("No item found at index " + index);
         }

@@ -10,7 +10,6 @@ public class LoginPage extends BasePage {
     private final By usernameField = new AppiumBy.ByAccessibilityId(LoginPageLocators.USERNAME_FIELD);
     private final By passwordField = new AppiumBy.ByAccessibilityId(LoginPageLocators.PASSWORD_FIELD);
     private final By loginButton = new AppiumBy.ByAccessibilityId(LoginPageLocators.LOGIN_BUTTON);
-    private final By errorMessage = new AppiumBy.ByAccessibilityId(LoginPageLocators.ERROR_MESSAGE);
     private final By errorMessageText = new By.ByXPath(LoginPageLocators.ERROR_MESSAGE_TEXT);
 
     public LoginPage(AppiumDriver driver) {

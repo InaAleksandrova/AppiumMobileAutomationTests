@@ -1,5 +1,9 @@
+package com.swaglabs;
+
+import com.swaglabs.BaseTests;
 import com.swaglabs.util.PropertiesHelper;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -86,4 +90,11 @@ public class LoginTests extends BaseTests {
         Assert.assertEquals(loginPage().getErrorMessageText(), propertiesHelper.getProperty("empty_username_error_message"));
         Assert.assertFalse(productsPage().isProductsPageVisible());
     }
+
+//    @AfterMethod
+//    public void logout() {
+//        productsPage().tapProductsMenu();
+//        menuPage().tapLogout();
+//        Assert.assertTrue(menuPage().isLoginPageDisplayed(), "The user is not logged out");
+//    }
 }

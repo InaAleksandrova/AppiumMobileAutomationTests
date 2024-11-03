@@ -9,15 +9,17 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
         <appium.java.client.version>9.2.2</appium.java.client.version>
         <selenium.version>4.25.0</selenium.version>
         <testng.version>7.10.2</testng.version>
         <allure.testng.version>2.29.0</allure.testng.version>
         <allure.java.version>2.29.0</allure.java.version>
+        <maven.allure.version>2.12.0</maven.allure.version>
     </properties>
 
     <dependencies>
@@ -53,22 +55,32 @@
         </dependency>
 
     </dependencies>
-
     <build>
         <plugins>
-            <!-- Maven Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>3.0.0</version>
                 <configuration>
-                    <properties>
-                        <!-- Add the Allure TestNG listener -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <systemProperties>
                         <property>
-                            <name>listener</name>
-                            <value>io.qameta.allure.testng.AllureTestNg</value>
+                            <name>allure.results.directory</name>
+                            <value>${project.build.directory}/allure-results</value>
                         </property>
-                    </properties>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${maven.allure.version}</version>
+                <configuration>
+                    <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                 </configuration>
             </plugin>
         </plugins>
